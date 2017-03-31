@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/12 10:23:39 by gsotty            #+#    #+#             */
-/*   Updated: 2016/11/12 16:13:56 by gsotty           ###   ########.fr       */
+/*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
+/*   Updated: 2017/03/31 15:27:01 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-void	ft_lstiter(t_list *lst, void (*f)(t_list *elem))
+# include "./libft/libft.h"
+# include "./ft_printf/ft_printf.h"
+# include <unistd.h>
+
+typedef struct		s_env
 {
-	while (lst != NULL)
-	{
-		(f)(lst);
-		lst = lst->next;
-	}
-}
+	char			*name;
+	char			*data;
+	struct s_env	*next;
+}					t_env;
+
+int		len_argc(char **cmd);
+char	**ft_strsplit_space(char const *s);
+int		echo(char **argv);
+int		cd(char **argv);
+
+#endif

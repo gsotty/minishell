@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd.c                                        :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/12 10:19:51 by gsotty            #+#    #+#             */
-/*   Updated: 2016/11/12 16:13:07 by gsotty           ###   ########.fr       */
+/*   Created: 2017/03/31 14:35:53 by gsotty            #+#    #+#             */
+/*   Updated: 2017/03/31 14:52:35 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstadd(t_list **alst, t_list *new)
+int		cd(char **argv)
 {
-	if (alst == NULL || new == NULL)
-		return ;
-	new->next = *alst;
-	*alst = new;
+
+	return (0);
 }

@@ -6,17 +6,22 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 08:39:57 by gsotty            #+#    #+#             */
-/*   Updated: 2017/02/25 12:13:21 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/03/30 16:04:22 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# define INT128 unsigned __int128
+# define BUFF_SIZE 100
 # include <string.h>
 
-typedef INT128			t_int128;
+typedef struct			s_file
+{
+	char				*str;
+	int					fd;
+	struct s_file		*next;
+}						t_file;
 
 typedef struct			s_list
 {
@@ -25,6 +30,7 @@ typedef struct			s_list
 	struct s_list		*next;
 }						t_list;
 
+int						get_next_line(const int fd, char **line);
 void					*ft_memset(void *s, int c, size_t n);
 void					ft_bzero(void *s, size_t n);
 void					*ft_memcpy(void *dest, const void *src, size_t n);
@@ -86,12 +92,9 @@ void					ft_lstdelone(t_list **alst, void (*del)(void *,
 						size_t));
 void					ft_lstdel(t_list **alst, void (*del)(void *,
 						size_t));
-void					ft_lstadd(t_list **alst, t_list *new);
-void					ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void					ft_putchar2(char c);
 void					ft_putstr2(char *str);
-t_int128				ft_pow(t_int128 a, t_int128 b);
 int						ft_sqrt(int nb);
 int						ft_pair(unsigned int x);
 

@@ -6,7 +6,7 @@
 #    By: gsotty <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 15:44:40 by gsotty            #+#    #+#              #
-#    Updated: 2017/03/22 15:07:36 by gsotty           ###   ########.fr        #
+#    Updated: 2017/03/30 15:58:52 by gsotty           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = libft.a
 
 CC = gcc
 
-FLAG = -Wall -Wextra -Werror
+FLAG = -Wall -Wextra -Werror -g
 
 SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c \
 	  ft_memcmp.c ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strncpy.c \
@@ -26,8 +26,8 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c \
 	  ft_strjoin.c ft_strsplit.c ft_itoa.c ft_putchar.c ft_putstr.c ft_putendl.c \
 	  ft_putnstr.c ft_putnbr.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c \
 	  ft_putnbr_fd.c ft_strnequ.c ft_strtrim.c ft_lstnew.c ft_lstdelone.c \
-	  ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_putchar2.c \
-	  ft_putstr2.c ft_pow.c ft_sqrt.c ft_pair.c
+	  ft_lstdel.c ft_lstmap.c ft_putchar2.c ft_putstr2.c ft_sqrt.c ft_pair.c \
+	  get_next_line.c
 
 OBJ = $(SRC:.c=.o)
 

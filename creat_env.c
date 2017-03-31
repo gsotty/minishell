@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pow.c                                           :+:      :+:    :+:   */
+/*   creat_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/01 18:09:25 by gsotty            #+#    #+#             */
-/*   Updated: 2016/12/11 19:09:41 by gsotty           ###   ########.fr       */
+/*   Created: 2017/03/31 15:23:56 by gsotty            #+#    #+#             */
+/*   Updated: 2017/03/31 15:50:04 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-t_int128	ft_pow(t_int128 a, t_int128 n)
+t_env	creat_env(char **envp)
 {
-	if (n == 0)
-		return (1);
-	else
-		return (a * ft_pow(a, n - 1));
+	t_env	begin_env;
+
+	ft_memset(&begin_env, 0, sizeof(t_env));
+	
+	return (begin_env);
 }
