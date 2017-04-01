@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:16:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/03/31 15:26:41 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/01 12:47:36 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,13 @@ int			minishell(int argc, char **argv, char **envp)
 	int		len_cmd;
 	char	*buf;
 	char	**cmd;
+	t_env	*tmp_env;
+	t_env	*begin_env;
 
 
 	ret = 0;
 	ft_putstr("$> ");
+	begin_env = creat_t_env(envp);
 	while (((ret = get_next_line(0, &buf)) > 0))
 	{
 		y = 0;
@@ -116,11 +119,13 @@ int			minishell(int argc, char **argv, char **envp)
 			len_cmd = len_argc(cmd);
 			if (ft_strcmp(cmd[0], "env") == 0)
 			{
-				while (envp[y] != NULL)
-				{
-					ft_printf("%s\n", envp[y]);
-					y++;
-				}
+				env(cmd, begin_env);
+		//		tmp_env = begin_env;
+		//		while (tmp_env != NULL)
+		//		{
+		//			ft_printf("%s, = ,%s\n", tmp_env->name, tmp_env->data);
+		//			tmp_env = tmp_env->next;
+		//		}
 			}
 			else if (ft_strcmp(cmd[0], "echo") == 0)
 				echo(cmd);
