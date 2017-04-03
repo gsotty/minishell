@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:16:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/01 12:47:36 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/03 17:33:33 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,34 +49,49 @@ int			exe_cmd(char **cmd, char **envp)
 	}
 	else
 	{
+		if (envp == NULL)
+		{
+			ft_printf("minishell: %s: No such file or directory\n",
+					cmd[0]);
+			return (0);
+		}
 		while ((ft_strstr(envp[x], "PATH=") == NULL) && envp[x] != NULL)
 			x++;
-		path = ft_strsplit(envp[x] + 5, ':');
-		len_cmd = ft_strlen(cmd[0]);
-		if ((tmp_cmd = ft_memalloc(len_cmd + 2)) == NULL)
-			return (-1);
-		ft_memcpy(tmp_cmd, "/", 1);
-		ft_memcpy(tmp_cmd + 1, cmd[0], len_cmd);
-		tmp_cmd[len_cmd + 1] = '\0';
-		free(cmd[0]);
-		cmd[0] = ft_strdup(tmp_cmd);
-		free(tmp_cmd);
-		while (path[y] != NULL)
+		if (envp[x] != NULL)
 		{
-			ret = access(tmp_join = ft_strjoin(path[y], cmd[0]), F_OK | X_OK);
-			if (ret == 0)
+			path = ft_strsplit(envp[x] + 5, ':');
+			len_cmd = ft_strlen(cmd[0]);
+			if ((tmp_cmd = ft_memalloc(len_cmd + 2)) == NULL)
+				return (-1);
+			ft_memcpy(tmp_cmd, "/", 1);
+			ft_memcpy(tmp_cmd + 1, cmd[0], len_cmd);
+			tmp_cmd[len_cmd + 1] = '\0';
+			free(cmd[0]);
+			cmd[0] = ft_strdup(tmp_cmd);
+			free(tmp_cmd);
+			while (path[y] != NULL)
 			{
-				father = fork();
-				if (father > 0)
+				ret = access(tmp_join = ft_strjoin(path[y], cmd[0]), F_OK
+						| X_OK);
+				if (ret == 0 && access(tmp_join, F_OK | X_OK) == 0)
 				{
-					wait(NULL);
-					return (1);
+					father = fork();
+					if (father > 0)
+					{
+						wait(NULL);
+						return (1);
+					}
+					if (father == 0)
+					{
+						execve(tmp_join, cmd, envp);
+						ft_printf("minishell: command not found: %s\n",
+								cmd[0] + 1);
+						exit(0);
+					}
 				}
-				if (father == 0)
-					execve(tmp_join, cmd, envp);
+				free(tmp_join);
+				y++;
 			}
-			free(tmp_join);
-			y++;
 		}
 		ft_printf("minishell: command not found: %s\n", cmd[0] + 1);
 	}
@@ -103,11 +118,13 @@ int			minishell(int argc, char **argv, char **envp)
 	char	**cmd;
 	t_env	*tmp_env;
 	t_env	*begin_env;
-
+	pid_t	father;
+	char	**tmp_envp;
 
 	ret = 0;
 	ft_putstr("$> ");
 	begin_env = creat_t_env(envp);
+	tmp_envp = creat_char_envp(begin_env);
 	while (((ret = get_next_line(0, &buf)) > 0))
 	{
 		y = 0;
@@ -119,23 +136,28 @@ int			minishell(int argc, char **argv, char **envp)
 			len_cmd = len_argc(cmd);
 			if (ft_strcmp(cmd[0], "env") == 0)
 			{
-				env(cmd, begin_env);
-		//		tmp_env = begin_env;
-		//		while (tmp_env != NULL)
-		//		{
-		//			ft_printf("%s, = ,%s\n", tmp_env->name, tmp_env->data);
-		//			tmp_env = tmp_env->next;
-		//		}
+				father = fork();
+				if (father > 0)
+					wait(NULL);
+				if (father == 0)
+				{
+					ft_env(cmd, begin_env);
+					exit(0);
+				}
 			}
 			else if (ft_strcmp(cmd[0], "echo") == 0)
 				echo(cmd);
+			else if (ft_strcmp(cmd[0], "setenv") == 0)
+				ft_setenv(begin_env, cmd);
+			else if (ft_strcmp(cmd[0], "unsetenv") == 0)
+				begin_env = ft_unsetenv(begin_env, cmd);
 			else if (ft_strcmp(cmd[0], "cd") == 0)
 			{
-				cd(cmd);
+				begin_env = cd(begin_env, cmd);
 			}
 			else
 			{
-				exe_cmd(cmd, envp);
+				exe_cmd(cmd, tmp_envp);
 			}
 		}
 		ft_putstr("$> ");

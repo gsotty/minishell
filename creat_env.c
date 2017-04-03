@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 15:23:56 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/01 12:47:07 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/03 14:19:49 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ t_env	*creat_t_env(char **envp)
 	t_env	*tmp;
 	t_env	*begin_env;
 
+	x = 1;
+	if (envp[0] == NULL)
+		return (NULL);
 	begin_env = creat_new(envp[0]);
 	tmp = begin_env;
 	while (envp[x] != NULL)
@@ -70,16 +73,18 @@ char	**creat_char_envp(t_env *env)
 	t_env	*tmp;
 
 	x = 0;
+	if (env == NULL)
+		return (NULL);
 	tmp = env;
 	len_list = ft_len_list(env);
-	if ((envp = ft_memalloc(sizeof(char *) * len_list)) == NULL)
+	if ((envp = ft_memalloc(sizeof(char *) * len_list + 1)) == NULL)
 		return (0);
-	while (tmp != NULL)
+	while (x < len_list)
 	{
 		if ((envp[x] = ft_memalloc(sizeof(char *) * (ft_strlen(tmp->name) +
 							ft_strlen(tmp->data + 2)))) == NULL)
 			return (0);
-		ft_sprintf(envp[x], "%s=%s\n", tmp->name, tmp->data);
+		ft_sprintf(envp[x], "%s=%s", tmp->name, tmp->data);
 		tmp = tmp->next;
 		x++;
 	}
