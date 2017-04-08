@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 10:44:03 by gsotty            #+#    #+#             */
-/*   Updated: 2017/03/31 11:57:55 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/05 13:39:15 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	ft_while(char const *s, char **tab, int x, int y)
 	while ((s[y] == ' ' || s[y] == '\t') && s[y] != '\0')
 		y++;
 	len_mot = ft_len_mot(s + y);
-	if ((tab[x] = (char *)malloc(sizeof(char) * len_mot + 1)) == NULL)
+	if ((tab[x] = ft_memalloc(sizeof(char) * len_mot)) == NULL)
 		return (-1);
 	tab[x] = ft_memcpy(tab[x], (const char *)s + y, len_mot);
 	tab[x][len_mot] = '\0';
@@ -78,14 +78,13 @@ char		**ft_strsplit_space(char const *s)
 	if (s == NULL)
 		return (NULL);
 	nbr_mot = ft_mot(s);
-	if ((tab = (char **)malloc(sizeof(char *) * nbr_mot + 1)) == NULL)
+	if ((tab = ft_memalloc(sizeof(char *) * nbr_mot + 1)) == NULL)
 		return (NULL);
 	tab[nbr_mot] = NULL;
-	while (nbr_mot)
+	while (nbr_mot > x)
 	{
 		if ((y = ft_while(s, tab, x, y)) == -1)
 			return (NULL);
-		nbr_mot--;
 		x++;
 	}
 	return (tab);

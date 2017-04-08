@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 15:23:56 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/03 14:19:49 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/04 12:29:46 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**creat_char_envp(t_env *env)
 	while (x < len_list)
 	{
 		if ((envp[x] = ft_memalloc(sizeof(char *) * (ft_strlen(tmp->name) +
-							ft_strlen(tmp->data + 2)))) == NULL)
+							ft_strlen(tmp->data) + 2))) == NULL)
 			return (0);
 		ft_sprintf(envp[x], "%s=%s", tmp->name, tmp->data);
 		tmp = tmp->next;

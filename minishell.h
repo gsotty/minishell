@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/03 17:33:07 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/04 13:54:43 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,18 @@ typedef struct		s_flag_env
 	char			*name;
 }					t_flag_env;
 
-int		len_argc(char **cmd);
-char	**ft_strsplit_space(char const *s);
-int		echo(char **argv);
-t_env	*cd(t_env *env, char **argv);
-int		ft_env(char **cmd, t_env *env);
-int		ft_setenv(t_env *begin_env, char **cmd);
-t_env	*ft_unsetenv(t_env *begin_env, char **cmd);
-int		exe_cmd(char **cmd, char **envp);
-t_env	*creat_t_env(char **envp);
-char	**creat_char_envp(t_env *env);
-t_env	*creat_new(char *envp);
-t_env	*add_env(t_env *begin_env, char *envp);
-t_env	*remove_env(t_env *begin_env, char *name);
+int					len_argc(char **cmd);
+char				**ft_strsplit_space(char const *s);
+int					echo(char **argv);
+t_env				*cd(t_env *env, char **argv);
+int					ft_env(char **cmd, t_env *env);
+int					ft_setenv(t_env *begin_env, char **cmd);
+t_env				*ft_unsetenv(t_env *begin_env, char **cmd);
+int					exe_cmd(char **cmd, t_env *envp);
+t_env				*creat_t_env(char **envp);
+char				**creat_char_envp(t_env *env);
+t_env				*creat_new(char *envp);
+t_env				*add_env(t_env *begin_env, char *envp);
+t_env				*remove_env(t_env *begin_env, char *name);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 13:58:54 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/03 16:47:52 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/04 15:28:49 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,30 @@ t_env	*remove_env(t_env *begin_env, char *name)
 	t_env	*env;
 	t_env	*tmp_env;
 
+	t_env	*test;
+
 	if (begin_env == NULL || name == NULL)
 		return (begin_env);
 	else
 	{
+		test = begin_env;
+		while (test == NULL)
+		{
+			ft_printf("%s, %s\n", test->name, test->data);
+			test = test->next;
+		}
 		env = begin_env;
 		ft_printf("%s, %s\n", name, env->name);
 		if (ft_strcmp(name, env->name) == 0)
 		{
-			begin_env = env->next;
-			free(env);
+			free(env->name);
+			env->name = env->next->name;
+			free(env->data);
+			env->data = env->next->data;
+			tmp_env = env->next->next;
+			free(env->next);
+			env->next = tmp_env;
+			free(tmp_env);
 			return (begin_env);
 		}
 		while (env->next != NULL)
@@ -40,6 +54,12 @@ t_env	*remove_env(t_env *begin_env, char *name)
 				return (begin_env);
 			}
 			env = env->next;
+		}
+		test = begin_env;
+		while (test == NULL)
+		{
+			ft_printf("%s, %s\n", test->name, test->data);
+			test = test->next;
 		}
 		return (begin_env);
 	}

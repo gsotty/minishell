@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/01 10:44:40 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/03 15:12:37 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/04 18:09:20 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int		ft_env(char **cmd, t_env *env)
 				}
 			}
 			else
-				exe_cmd(cmd + ret + y, envp);
+				exe_cmd(cmd + ret + y, env);
 			return (0);
 			y++;
 		}
