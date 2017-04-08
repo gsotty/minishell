@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 10:31:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 12:16:18 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/08 16:33:25 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static char	*creat_buf(char *buf)
 
 	x = 0;
 	cont = 0;
-	ft_memset(buf, 0, MAX_CANON);
-	while ((ret = read(0, &c, 1)) && c != '\n')
+	ft_memset(buf, '\0', MAX_CANON);
+	while (((ret = read(0, &c, 1)) && c != '\n') && cont < MAX_CANON)
 	{
 		buf[cont] = c;
 		cont++;
@@ -55,8 +55,6 @@ static int	minishell(char **envp)
 	int		x;
 	char	buf[MAX_CANON];
 
-	if (!envp)
-		return (0);
 	while (1)
 	{
 		print_prompt();

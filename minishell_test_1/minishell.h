@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 12:16:11 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/08 16:58:32 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,18 @@ typedef struct		s_flag_env
 	char			*name;
 }					t_flag_env;
 
+typedef struct		s_split
+{
+	int				j;
+	int				x;
+}					t_split;
+
 int					echo(char **argv);
 char				**creat_char_envp(t_env *env);
 char				**exe(char *buf, char **envp);
 char				**cd(char **argv, char **envp);
 char				**ft_env(char **cmd, char **env);
-char				**ft_strsplit_space(char const *s);
+char				**ft_strsplit_space(char const *s, char *c);
 char				**exe_cmd(int argc, char **argv, char **envp);
 t_env				*creat_new(char *envp);
 t_env				*creat_t_env(char **envp);

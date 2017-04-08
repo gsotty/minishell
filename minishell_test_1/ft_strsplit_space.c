@@ -6,88 +6,63 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 15:59:07 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 13:42:09 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/08 17:04:42 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_nbr_mot(char const *buf)
+int		is_char(char str, char *c)
 {
-	int		j;
-	int		y;
 	int		x;
 
 	x = 0;
-	j = 0;
-	y = 0;
-	while (buf[x] != '\0')
+	while (c[x] != '\0')
 	{
-		while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
-		{
-			j = 0;
-			x++;
-		}
-		if (buf[x] != ' ' && buf[x] != '\t' && buf[x] != '\0' && j == 0)
-		{
-			j = 1;
-			y++;
-		}
+		if (c[x] == str)
+			return (1);
 		x++;
 	}
-	return (y);
+	return (0);
 }
 
-int		ft_while(char const *buf, char **tab)
+void	ft_while(char **tab, char const *buf, char *c, t_split *len)
 {
-	int		j;
 	int		y;
-	int		x;
-	int		z;
+	int		fin;
+	int		debut;
 
-	z = 0;
-	x = 0;
-	j = 0;
 	y = 0;
-	while (buf[x] != '\0')
-	{
-		while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
-		{
-			j = 0;
-			x++;
-		}
-		if (buf[x] != ' ' && buf[x] != '\t' && buf[x] != '\0' && j == 0)
-		{
-			j = 1;
-			z = x;
-			while (buf[z] != ' ' && buf[z] != '\t' && buf[z] != '\0')
-				z++;
-			if ((tab[y] = ft_memalloc(sizeof(**tab) * ((z - x) + 2))) == NULL)
-				return (0);
-			ft_memcpy(tab[y], buf + x, z);
-			tab[y][z - x] = '\0';
-			y++;
-		}
-		x++;
-	}
-	return (y);
+	fin = 0;
+	debut = 0;
+	while (is_char(buf[y + len->j], c) == 1 && buf[y + len->j] != '\0')
+		y++;
+	debut = y;
+	while (is_char(buf[y + len->j], c) == 0 && buf[y + len->j] != '\0')
+		y++;
+	fin = y;
+	if (!(tab[len->x] = ft_memalloc(sizeof(**tab) * ((fin - debut) + 1))))
+		return ;
+	ft_memcpy(tab[len->x], buf + len->j + debut, fin - debut);
+	tab[len->x][fin - debut] = '\0';
+	len->j += fin;
 }
 
-char	**ft_strsplit_space(char const *buf)
+char	**ft_strsplit_space(char const *buf, char *c)
 {
-	int		nbr_mot;
-	char	**tab;
+	t_split		len;
+	char		**tab;
 
 	tab = NULL;
-	nbr_mot = ft_nbr_mot(buf);
-	if ((tab = ft_memalloc(sizeof(*tab) * (nbr_mot + 1))) == NULL)
+	ft_memset(&len, 0, sizeof(t_split));
+	if ((tab = ft_memalloc(sizeof(*tab) * (MAX_CANON))) == NULL)
 		return (NULL);
-	ft_while(buf, tab);
-	int	x=0;
-	while (tab[x] != NULL)
+	while (buf[len.j] != '\0' && len.x < 10)
 	{
-//		ft_printf("tab[x] = %s\n", tab[x]);
-		x++;
+		ft_while(tab, buf, c, &len);
+		while (is_char(buf[len.j], c) == 1 && buf[len.j] != '\0')
+			len.j++;
+		len.x++;
 	}
 	return (tab);
 }

@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 11:34:50 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 12:23:08 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/08 17:04:52 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,7 @@ char		**exe(char *buf, char **envp)
 	int		argc;
 	char	**argv;
 
-	if (!envp)
-		return (envp);
-	argv = ft_strsplit_space(buf);
+	argv = ft_strsplit_space(buf, " \t");
 	argc = len_tab(argv);
 	envp = exe_cmd(argc, argv, envp);
 	free_tab(argv);
