@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 10:31:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 16:33:25 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/09 19:00:51 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,13 @@ static char	*creat_buf(char *buf)
 	return (buf);
 }
 
-static int	minishell(char **envp)
+static int	minishell(char **envp_begin)
 {
 	int		x;
 	char	buf[MAX_CANON];
+	char	**envp;
 
+	envp = creat_envp(envp_begin);
 	while (1)
 	{
 		print_prompt();
@@ -75,6 +77,7 @@ static int	minishell(char **envp)
 				envp = exe(buf, envp);
 		}
 	}
+	free_tab(envp);
 	return (0);
 }
 

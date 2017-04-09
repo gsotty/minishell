@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 11:34:50 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 17:04:52 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/09 18:15:00 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,35 @@ static void	exe_path(char **argv, char **envp, char **path)
 
 static void	no_exe_cmd(int argc, char **argv, char **envp)
 {
-	t_env	*tmp;
-	t_env	*env;
+	int		x;
+	char	*p;
+	char	*tmp;
 	char	**path;
 
-	if (argc == 0)
-		return ;
-	env = creat_t_env(envp);
-	tmp = env;
-	while (tmp != NULL)
+	if (argc == 0 || envp == NULL)
 	{
-		if (ft_strcmp(tmp->name, "PATH") == 0)
+		ft_printf("minishell: command not found: %s\n", argv[0]);
+		return ;
+	}
+	x = 0;
+	while (envp[x] != NULL)
+	{
+		tmp = ft_strdup(envp[x]);
+		p = ft_strchr(tmp, '=');
+		*p = '\0';
+		if (ft_strcmp(tmp, "PATH") == 0)
 			break ;
-		tmp = tmp->next;
+		free(tmp);
+		x++;
 	}
 	if (tmp == NULL)
 		ft_printf("minishell: command not found: %s\n", argv[0]);
 	else
 	{
-		path = ft_strsplit(tmp->data, ':');
+		path = ft_strsplit_space(p + 1, ":");
 		exe_path(argv, envp, path);
 		free_tab(path);
 	}
-	free_env(env);
 }
 
 char		**exe_cmd(int argc, char **argv, char **envp)
@@ -91,15 +97,11 @@ char		**exe_cmd(int argc, char **argv, char **envp)
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		echo(argv);
 	else if (ft_strcmp(argv[0], "setenv") == 0)
-	{
-	}
+		envp = ft_setenv(envp, argv);
 	else if (ft_strcmp(argv[0], "unsetenv") == 0)
-	{
-	}
+		envp = ft_unsetenv(envp, argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
-	{
 		envp = cd(argv, envp);
-	}
 	else
 	{
 		father = fork();

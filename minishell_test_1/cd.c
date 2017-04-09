@@ -6,13 +6,13 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 14:35:53 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/07 16:59:14 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/09 15:42:28 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*add_pwd(t_env *env)
+char	**add_pwd(char **envp)
 {
 	char	pwd[PATH_MAX + 1];
 	int		len_pwd;
@@ -21,44 +21,38 @@ t_env	*add_pwd(t_env *env)
 	len_pwd = ft_strlen(pwd);
 	pwd[len_pwd] = '/';
 	pwd[len_pwd + 1] = '\0';
-	env = add_env(env, ft_strjoin("PWD=", pwd));
-	return (env);
+	envp = add_env(envp, ft_strjoin("PWD=", pwd));
+	return (envp);
 }
 
 char	**cd(char **argv, char **envp)
 {
-	t_env	*env;
-	t_env	*tmp_env;
+	char	*tmp;
 	char	pwd[PATH_MAX + 1];
 
-	env = creat_t_env(envp);
 	if (argv[1] == NULL)
 	{
-		tmp_env = find_var_env(env, "HOME");
+		tmp = find_var_env(envp, "HOME");
 		getcwd(pwd, PATH_MAX);
-		if (chdir(tmp_env->data) == -1)
+		if (chdir(tmp) == -1)
 		{
 			ft_printf("error\n");
-			envp = creat_char_envp(env);
 			return (envp);
 		}
-		env = add_env(env, ft_strjoin("OLDPWD=", pwd));
-		env = add_pwd(env);
-		tmp_env = find_var_env(env, "OLDPWD");
-		tmp_env = find_var_env(env, "PWD");
+		envp = add_env(envp, ft_strjoin("OLDPWD=", pwd));
+		envp = add_pwd(envp);
 	}
 	else if (argv[1][0] == '-' && argv[1][1] == '\0' &&  argv[2] == '\0')
 	{
-		tmp_env = find_var_env(env, "OLDPWD");
+		tmp = find_var_env(envp, "OLDPWD");
 		getcwd(pwd, PATH_MAX);
-		if (chdir(tmp_env->data) == -1)
+		if (chdir(tmp) == -1)
 		{
 			ft_printf("error\n");
-			envp = creat_char_envp(env);
 			return (envp);
 		}
-		env = add_env(env, ft_strjoin("OLDPWD=", pwd));
-		env = add_pwd(env);
+		envp = add_env(envp, ft_strjoin("OLDPWD=", pwd));
+		envp = add_pwd(envp);
 	}
 	else if (argv[1] != '\0' && argv[2] == '\0')
 	{
@@ -68,27 +62,24 @@ char	**cd(char **argv, char **envp)
 			if (chdir(argv[1]) == -1)
 			{
 				ft_printf("error\n");
-				envp = creat_char_envp(env);
 				return (envp);
 			}
-			env = add_env(env, ft_strjoin("OLDPWD=", pwd));
-			env = add_pwd(env);
+			envp = add_env(envp, ft_strjoin("OLDPWD=", pwd));
+			envp = add_pwd(envp);
 		}
 		else
 		{
 			getcwd(pwd, PATH_MAX);
-			env = add_env(env, ft_strjoin("OLDPWD=", pwd));
+			envp = add_env(envp, ft_strjoin("OLDPWD=", pwd));
 			if (chdir(argv[1]) == -1)
 			{
 				ft_printf("error\n");
-				envp = creat_char_envp(env);
 				return (envp);
 			}
-			env = add_pwd(env);
+			envp = add_pwd(envp);
 		}
 	}
 	else
 		ft_printf("cd: string not in pwd: %s\n", argv[1]);
-	envp = creat_char_envp(env);
 	return (envp);
 }

@@ -6,13 +6,13 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 15:23:56 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/04 12:29:46 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/07 12:34:51 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*creat_new(char *envp)
+t_env		*creat_new(char *envp)
 {
 	char	*p;
 	char	*tmp_envp;
@@ -25,10 +25,11 @@ t_env	*creat_new(char *envp)
 	*p = '\0';
 	new->name = ft_strdup(tmp_envp);
 	new->next = NULL;
+	free(tmp_envp);
 	return (new);
 }
 
-t_env	*creat_t_env(char **envp)
+t_env		*creat_t_env(char **envp)
 {
 	int		x;
 	t_env	*new;
@@ -50,7 +51,7 @@ t_env	*creat_t_env(char **envp)
 	return (begin_env);
 }
 
-int		ft_len_list(t_env *env)
+static int	ft_len_list(t_env *env)
 {
 	int		x;
 	t_env	*tmp;
@@ -65,7 +66,7 @@ int		ft_len_list(t_env *env)
 	return (x);
 }
 
-char	**creat_char_envp(t_env *env)
+char		**creat_char_envp(t_env *env)
 {
 	int		x;
 	int		len_list;

@@ -6,7 +6,7 @@
 #    By: gsotty <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 15:44:40 by gsotty            #+#    #+#              #
-#    Updated: 2017/04/08 12:18:07 by gsotty           ###   ########.fr        #
+#    Updated: 2017/04/09 17:50:29 by gsotty           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,15 +25,16 @@ INCLUDE = ./minishell.h
 SRC = minishell.c \
 	  ft_strsplit_space.c \
 	  exe.c \
-	  creat_env.c \
 	  echo.c \
-	  free_env.c \
 	  free_tab.c \
 	  cd.c \
 	  add_env.c \
 	  find_var_env.c \
 	  env.c \
-	  remove_env.c
+	  remove_env.c \
+	  setenv.c \
+	  unsetenv.c \
+	  tab_envp.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_var_env.c                                     :+:      :+:    :+:   */
+/*   unsetenv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/07 14:10:43 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 15:37:25 by gsotty           ###   ########.fr       */
+/*   Created: 2017/04/03 15:49:00 by gsotty            #+#    #+#             */
+/*   Updated: 2017/04/09 14:50:21 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_var_env(char **envp, char *name)
+char	**ft_unsetenv(char **envp, char **cmd)
 {
 	int		x;
-	char	*p;
-	char	*tmp;
 
-	x = 0;
-	while (envp[x] != NULL)
+	x = 1;
+	while (cmd[x] != NULL)
 	{
-		tmp = ft_strdup(envp[x]);
-		p = ft_strchr(tmp, '=');
-		*p = '\0';
-		if (ft_strcmp(tmp, name) == 0)
-			break ;
-		free(tmp);
+		envp = remove_env(envp, cmd[x]);
 		x++;
 	}
-	return (p + 1);
+	return (envp);
 }

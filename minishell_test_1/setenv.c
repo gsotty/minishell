@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_var_env.c                                     :+:      :+:    :+:   */
+/*   setenv.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/07 14:10:43 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 15:37:25 by gsotty           ###   ########.fr       */
+/*   Created: 2017/04/03 15:18:51 by gsotty            #+#    #+#             */
+/*   Updated: 2017/04/09 14:27:30 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_var_env(char **envp, char *name)
+char	**ft_setenv(char **envp, char **cmd)
 {
 	int		x;
-	char	*p;
-	char	*tmp;
 
-	x = 0;
-	while (envp[x] != NULL)
+	x = 1;
+	while (cmd[x] != NULL)
 	{
-		tmp = ft_strdup(envp[x]);
-		p = ft_strchr(tmp, '=');
-		*p = '\0';
-		if (ft_strcmp(tmp, name) == 0)
-			break ;
-		free(tmp);
+		if (ft_strchr(cmd[x], '=') != NULL)
+			envp = add_env(envp, cmd[x]);
+		else
+		{
+			ft_printf("minishell: setenv: %s: invalid argument\n", cmd[x]);
+			return (envp);
+		}
 		x++;
 	}
-	return (p + 1);
+	return (envp);
 }

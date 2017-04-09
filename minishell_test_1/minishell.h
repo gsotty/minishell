@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 16:58:32 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/09 18:22:23 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@
 # include "./libft/libft.h"
 # include "./ft_printf/ft_printf.h"
 # include <unistd.h>
-
-typedef struct		s_env
-{
-	char			*name;
-	char			*data;
-	struct s_env	*next;
-}					t_env;
 
 typedef struct		s_flag_env
 {
@@ -38,26 +31,18 @@ typedef struct		s_split
 }					t_split;
 
 int					echo(char **argv);
-char				**creat_char_envp(t_env *env);
+char				**creat_envp(char **envp);
 char				**exe(char *buf, char **envp);
 char				**cd(char **argv, char **envp);
 char				**ft_env(char **cmd, char **env);
+char				**add_env(char **envp, char *data);
+char				**ft_setenv(char **envp, char **cmd);
+char				**remove_env(char **envp, char *name);
+char				*find_var_env(char **env, char *name);
+char				**ft_unsetenv(char **envp, char **cmd);
 char				**ft_strsplit_space(char const *s, char *c);
 char				**exe_cmd(int argc, char **argv, char **envp);
-t_env				*creat_new(char *envp);
-t_env				*creat_t_env(char **envp);
-t_env				*find_var_env(t_env *env, char *name);
-t_env				*add_env(t_env *begin_env, char *envp);
-t_env				*remove_env(t_env *begin_env, char *name);
-void				free_env(t_env *env);
+char				**remalloc_envp(char **envp, int after_size, int new_size);
 void				free_tab(char **tab);
-
-/*
-**
-** int					len_argc(char **cmd);
-** int					ft_setenv(t_env *begin_env, char **cmd);
-** t_env				*ft_unsetenv(t_env *begin_env, char **cmd);
-**
-*/
 
 #endif

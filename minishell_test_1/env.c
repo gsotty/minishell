@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/08 13:56:15 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 14:27:26 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/09 17:43:37 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ char	**ft_env(char **cmd, char **envp)
 	int				y;
 	int				x;
 	int				ret;
-	char			**tmp_envp;
-	t_env	*env;
 	t_flag_env		flag;
 
 	y = 0;
@@ -109,38 +107,29 @@ char	**ft_env(char **cmd, char **envp)
 	}
 	else
 	{
-		env = creat_t_env(envp);
 		if (flag.i_min == 1)
-			tmp_envp = NULL;
-		else
-			tmp_envp = envp;
+			envp = NULL;
 		if (flag.u_min == 1)
-			env = remove_env(env, flag.name);
+			envp = remove_env(envp, flag.name);
 		while (cmd[ret + y] != NULL)
 		{
 			if (ft_strchr(cmd[ret + y], '=') != NULL)
-				env = add_env(env, cmd[ret + y]);
+				envp = add_env(envp, cmd[ret + y]);
 			else
 				break ;
 			y++;
 		}
-		while (cmd[ret + y] != NULL)
+		if (cmd[ret + y] != NULL)
 		{
-			free_tab(envp);
-			envp = creat_char_envp(env);
-			free_env(env);
-			exe_cmd(1, cmd + ret + y, envp);
+			envp = exe_cmd(1, cmd + ret + y, envp);
 			y++;
 		}
-		if (cmd[ret + y] == NULL)
+		else if (cmd[ret + y] == NULL)
 		{
 			free_tab(cmd);
 			cmd[0] = ft_strdup("env");
 			cmd[1] = NULL;
-			free_tab(envp);
-			envp = creat_char_envp(env);
-			free_env(env);
-			ft_env(cmd, envp);
+			envp = ft_env(cmd, envp);
 		}
 	}
 	return (envp);
