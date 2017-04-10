@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 18:22:23 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/10 13:57:59 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct		s_split
 }					t_split;
 
 int					echo(char **argv);
+int					check_flag_env(char **cmd, t_flag_env *flag);
 char				**creat_envp(char **envp);
 char				**exe(char *buf, char **envp);
 char				**cd(char **argv, char **envp);
@@ -42,6 +43,7 @@ char				*find_var_env(char **env, char *name);
 char				**ft_unsetenv(char **envp, char **cmd);
 char				**ft_strsplit_space(char const *s, char *c);
 char				**exe_cmd(int argc, char **argv, char **envp);
+char				**exe_fork(int argc, char **argv, char **envp);
 char				**remalloc_envp(char **envp, int after_size, int new_size);
 void				free_tab(char **tab);
 

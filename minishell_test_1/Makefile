@@ -6,7 +6,7 @@
 #    By: gsotty <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 15:44:40 by gsotty            #+#    #+#              #
-#    Updated: 2017/04/09 17:50:29 by gsotty           ###   ########.fr        #
+#    Updated: 2017/04/10 13:56:04 by gsotty           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,9 @@ SRC = minishell.c \
 	  remove_env.c \
 	  setenv.c \
 	  unsetenv.c \
-	  tab_envp.c
+	  tab_envp.c \
+	  verif_flag_env.c \
+	  exe_fork.c
 
 OBJ = $(SRC:.c=.o)
 

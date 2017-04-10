@@ -6,36 +6,20 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 11:34:53 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 19:38:10 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/10 17:21:48 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-static int	len_tab(char	**tab)
-{
-	int		x;
-
-	x = 0;
-	while (tab[x] != NULL)
-		x++;
-	return (x);
-}
-*/
-
-char		**add_env(char **envp, char *data)
+int			find_var(char **envp, char *tmp_data)
 {
 	int		x;
 	char	*p;
-	char	*tmp_data;
 	char	*tmp_envp;
 
 	x = 0;
-	tmp_data = ft_strdup(data);
-	p = ft_strchr(tmp_data, '=');
-	*p = '\0';
-	while (envp[x + 1] != NULL)
+	while (envp[x] != NULL)
 	{
 		tmp_envp = ft_strdup(envp[x]);
 		p = ft_strchr(tmp_envp, '=');
@@ -48,10 +32,34 @@ char		**add_env(char **envp, char *data)
 		free(tmp_envp);
 		x++;
 	}
-	if (envp[x + 1] == NULL)
+	return (x);
+}
+
+char		**envp_null(char *data)
+{
+	char	**new_envp;
+
+	if ((new_envp = ft_memalloc(sizeof(char *))) == NULL)
+		return (NULL);
+	new_envp[0] = ft_strdup(data);
+	return (new_envp);
+}
+
+char		**envp_no_null(char **envp, char *data)
+{
+	int		x;
+	char	*p;
+	char	*tmp_data;
+
+	x = 0;
+	tmp_data = ft_strdup(data);
+	p = ft_strchr(tmp_data, '=');
+	*p = '\0';
+	x = find_var(envp, tmp_data);
+	if (envp[x] == NULL)
 	{
 		envp = remalloc_envp(envp, x, x + 1);
-		envp[x + 1] = ft_strdup(data);
+		envp[x] = ft_strdup(data);
 	}
 	else
 	{
@@ -59,5 +67,18 @@ char		**add_env(char **envp, char *data)
 		envp[x] = ft_strdup(data);
 	}
 	free(tmp_data);
+	return (envp);
+}
+
+char		**add_env(char **envp, char *data)
+{
+	if (envp == NULL || envp[0] == NULL)
+	{
+		if ((envp = envp_null(data)) == NULL)
+			return (NULL);
+		return (envp);
+	}
+	else
+		envp = envp_no_null(envp, data);
 	return (envp);
 }

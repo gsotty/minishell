@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 15:59:07 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/08 17:04:42 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/10 17:52:45 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**ft_strsplit_space(char const *buf, char *c)
 	ft_memset(&len, 0, sizeof(t_split));
 	if ((tab = ft_memalloc(sizeof(*tab) * (MAX_CANON))) == NULL)
 		return (NULL);
-	while (buf[len.j] != '\0' && len.x < 10)
+	while (buf[len.j] != '\0' && len.x < MAX_CANON)
 	{
 		ft_while(tab, buf, c, &len);
 		while (is_char(buf[len.j], c) == 1 && buf[len.j] != '\0')

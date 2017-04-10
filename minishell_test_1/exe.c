@@ -6,94 +6,35 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 11:34:50 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 18:15:00 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/10 17:34:23 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exe_path(char **argv, char **envp, char **path)
+static char	**env_fork(char **argv, char **envp)
 {
-	int		x;
-	int		len_path;
-	char	*tmp_join;
-	char	*tmp_path;
+	pid_t	father;
 
-	x = 0;
-	while (path[x] != NULL)
+	father = fork();
+	if (father > 0)
 	{
-		len_path = ft_strlen(path[x]);
-		if (!(tmp_path = ft_memalloc(sizeof(char) * (len_path + 2))))
-			return ;
-		ft_memcpy(tmp_path, path[x], len_path);
-		ft_strcat(tmp_path, "/");
-		if (access(tmp_join = ft_strjoin(tmp_path, argv[0]),
-					F_OK | X_OK) == 0)
-		{
-			free(argv[0]);
-			argv[0] = ft_strdup(tmp_join);
-			execve(tmp_join, argv, envp);
-			free(tmp_join);
-			return ;
-		}
-		free(tmp_path);
-		free(tmp_join);
-		x++;
+		wait(NULL);
+		return (envp);
 	}
-	ft_printf("minishell: command not found: %s\n", argv[0]);
-}
-
-static void	no_exe_cmd(int argc, char **argv, char **envp)
-{
-	int		x;
-	char	*p;
-	char	*tmp;
-	char	**path;
-
-	if (argc == 0 || envp == NULL)
+	if (father == 0)
 	{
-		ft_printf("minishell: command not found: %s\n", argv[0]);
-		return ;
+		envp = ft_env(argv, envp);
+		free_tab(envp);
+		exit(0);
 	}
-	x = 0;
-	while (envp[x] != NULL)
-	{
-		tmp = ft_strdup(envp[x]);
-		p = ft_strchr(tmp, '=');
-		*p = '\0';
-		if (ft_strcmp(tmp, "PATH") == 0)
-			break ;
-		free(tmp);
-		x++;
-	}
-	if (tmp == NULL)
-		ft_printf("minishell: command not found: %s\n", argv[0]);
-	else
-	{
-		path = ft_strsplit_space(p + 1, ":");
-		exe_path(argv, envp, path);
-		free_tab(path);
-	}
+	return (envp);
 }
 
 char		**exe_cmd(int argc, char **argv, char **envp)
 {
-	pid_t	father;
-
 	if (ft_strcmp(argv[0], "env") == 0)
-	{
-		father = fork();
-		if (father > 0)
-		{
-			wait(NULL);
-			return (envp);
-		}
-		if (father == 0)
-		{
-			envp = ft_env(argv, envp);
-			exit(0);
-		}
-	}
+		envp = env_fork(argv, envp);
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		echo(argv);
 	else if (ft_strcmp(argv[0], "setenv") == 0)
@@ -103,22 +44,7 @@ char		**exe_cmd(int argc, char **argv, char **envp)
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		envp = cd(argv, envp);
 	else
-	{
-		father = fork();
-		if (father > 0)
-		{
-			wait(NULL);
-			return (envp);
-		}
-		if (father == 0)
-		{
-			if (access(argv[0], F_OK | X_OK) == 0)
-				execve(argv[0], argv, envp);
-			else
-				no_exe_cmd(argc, argv, envp);
-			exit(0);
-		}
-	}
+		envp = exe_fork(argc, argv, envp);
 	return (envp);
 }
 

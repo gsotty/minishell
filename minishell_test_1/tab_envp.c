@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/09 12:45:18 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 19:11:43 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/10 18:01:40 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ char	**remalloc_envp(char **envp, int after_size, int new_size)
 	if ((new_envp = ft_memalloc(sizeof(char *) * (new_size + 1))) == NULL)
 		return (NULL);
 	x = 0;
-	while (x <= after_size)
+	while (x < after_size)
 	{
 		new_envp[x] = ft_strdup(envp[x]);
 		free(envp[x]);
+		envp[x] = NULL;
 		x++;
 	}
 	free(envp);

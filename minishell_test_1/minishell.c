@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 10:31:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 19:00:51 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/10 16:29:25 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static char	*creat_buf(char *buf)
 		buf[cont] = c;
 		cont++;
 	}
+	if (ret == 0)
+		exit(0);
 	buf[cont] = '\0';
 	while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
 		x++;
@@ -50,33 +52,41 @@ static char	*creat_buf(char *buf)
 	return (buf);
 }
 
-static int	minishell(char **envp_begin)
+static char	**while_minishell(char **envp)
 {
 	int		x;
 	char	buf[MAX_CANON];
+
+	x = 0;
+	print_prompt();
+	if (creat_buf(buf) != NULL)
+	{
+		while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
+			x++;
+		if (ft_strstr(buf, "exit") != NULL)
+		{
+			x += 4;
+			while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
+				x++;
+			if (buf[x] == '\0')
+			{
+				free_tab(envp);
+				exit(0);
+			}
+		}
+		if (buf[0] != '\0')
+			envp = exe(buf, envp);
+	}
+	return (envp);
+}
+
+static int	minishell(char **envp_begin)
+{
 	char	**envp;
 
 	envp = creat_envp(envp_begin);
 	while (1)
-	{
-		print_prompt();
-		if (creat_buf(buf) != NULL)
-		{
-			x = 0;
-			while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
-				x++;
-			if (ft_strstr(buf, "exit") != NULL)
-			{
-				x += 4;
-				while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
-					x++;
-				if (buf[x] == '\0')
-					return (0);
-			}
-			if (buf[0] != '\0')
-				envp = exe(buf, envp);
-		}
-	}
+		envp = while_minishell(envp);
 	free_tab(envp);
 	return (0);
 }
