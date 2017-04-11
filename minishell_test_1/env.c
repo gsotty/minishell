@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/08 13:56:15 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/10 18:03:50 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 15:45:28 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ char	**env_no_argv(char **envp)
 	int		x;
 
 	x = 0;
+	if (envp == NULL || envp[0] == NULL)
+		return (envp);
 	while (envp[x] != NULL)
 	{
 		ft_printf("%s\n", envp[x]);
@@ -58,7 +60,7 @@ char	**ft_env(char **cmd, char **envp)
 	t_flag_env		flag;
 
 	ft_memset(&flag, '\0', sizeof(t_flag_env));
-	if ((ret = check_flag_env(cmd, &flag)) == -1)
+	if ((ret = check_flag_env(cmd, &flag, envp)) == -1)
 		return (envp);
 	if (flag.i_min == 1)
 	{
@@ -69,7 +71,7 @@ char	**ft_env(char **cmd, char **envp)
 		envp = env_no_argv(envp);
 	else
 	{
-		if (flag.u_min == 1)
+		if (flag.u_min >= 1)
 			envp = remove_env(envp, flag.name);
 		envp = env_argv(cmd, envp, ret);
 	}

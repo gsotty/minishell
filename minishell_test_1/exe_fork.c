@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/10 12:49:24 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/10 17:54:39 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 12:36:55 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,43 @@ static void		exe_path(char **argv, char **envp, char **path)
 			return ;
 		x++;
 	}
-	ft_printf("minishell: command not found: %s\n", argv[0]);
+	ft_printf_e("\033[31mminishell: command not found:\033[0m %s\n", argv[0]);
 }
 
-static void		no_exe_cmd(char **argv, char **envp)
+void			no_exe_cmd_2(char **argv, char **envp, int x)
 {
-	int		x;
 	char	*p;
 	char	*tmp;
 	char	**path;
 
+	if (envp[x] == NULL)
+	{
+		ft_printf_e("\033[31mminishell: command not found:\033[0m %s\n",
+				argv[0]);
+		return ;
+	}
+	else
+	{
+		tmp = ft_strdup(envp[x]);
+		p = ft_strchr(tmp, '=');
+		*p = '\0';
+		path = ft_strsplit_space(p + 1, ":");
+		exe_path(argv, envp, path);
+		free_tab(path);
+		free(tmp);
+	}
+}
+
+void			no_exe_cmd(char **argv, char **envp)
+{
+	int		x;
+	char	*p;
+	char	*tmp;
+
 	x = 0;
+	if (envp == NULL || envp[x] == NULL)
+		ft_printf_e("\033[31mminishell: command not found:\033[0m %s\n",
+				argv[0]);
 	while (envp[x] != NULL)
 	{
 		tmp = ft_strdup(envp[x]);
@@ -70,15 +96,7 @@ static void		no_exe_cmd(char **argv, char **envp)
 		free(tmp);
 		x++;
 	}
-	if (envp[x] == NULL)
-		ft_printf("minishell: command not found: %s\n", argv[0]);
-	else
-	{
-		path = ft_strsplit_space(p + 1, ":");
-		exe_path(argv, envp, path);
-		free_tab(path);
-	}
-	free(tmp);
+	no_exe_cmd_2(argv, envp, x);
 }
 
 char			**exe_fork(int argc, char **argv, char **envp)
@@ -88,7 +106,8 @@ char			**exe_fork(int argc, char **argv, char **envp)
 	father = fork();
 	if (argc == 0)
 	{
-		ft_printf("minishell: command not found: %s\n", argv[0]);
+		ft_printf_e("\033[31mminishell: command not found:\033[0m %s\n",
+				argv[0]);
 		return (envp);
 	}
 	if (father > 0)

@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/10 12:37:32 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/10 12:46:33 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 16:09:30 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,77 +14,80 @@
 
 static int	ft_printf_erreur(char **cmd, int x, int y)
 {
-	ft_printf("env: illegal option -- %c\nusage: env [-i] ",
+	ft_printf_e("env: illegal option -- %c\nusage: env [-i] ",
 			cmd[x][y]);
-	ft_printf("[-u name] [name=value ...]\n\t   [utility [argume");
-	ft_printf("nt ...]]\n");
+	ft_printf_e("[-u name] [name=value ...]\n\t   [utility [argume");
+	ft_printf_e("nt ...]]\n");
 	return (-1);
 }
 
-static int	verif_u_min(char **cmd, int x, int y, t_flag_env *flag)
+static int	verif_u_min(char **cmd, t_intflag *var, t_flag_env *flag,
+		char **envp)
 {
 	flag->u_min += 1;
-	if (cmd[x][y + 1] != '\0')
+	if (cmd[var->x][var->y + 1] != '\0')
 	{
-		flag->name = ft_strdup(cmd[x] + y + 1);
+		flag->name = ft_strdup(cmd[var->x] + var->y + 1);
+		envp = remove_env(envp, cmd[var->x] + var->y + 1);
 		return (1);
 	}
-	else if (cmd[x][y + 1] == '\0' && cmd[x + 1] != NULL)
+	else if (cmd[var->x][var->y + 1] == '\0' && cmd[var->x + 1] != NULL)
 	{
-		flag->name = ft_strdup(cmd[x + 1]);
+		flag->name = ft_strdup(cmd[var->x + 1]);
+		envp = remove_env(envp, cmd[var->x + 1]);
 		return (2);
 	}
 	else
 	{
-		ft_printf("env: option requires an argument -- %c\nusage:",
-				cmd[x][y]);
-		ft_printf(" env [-i] [-u name] [name=value ...]");
-		ft_printf("\n\t   [utility [argument ...]]\n");
-		return (-1);
+		ft_printf_e("env: option requires an argument -- %c\nusage:",
+				cmd[var->x][var->y]);
+		ft_printf_e(" env [-i] [-u name] [name=value ...]");
+		ft_printf_e("\n\t   [utility [argument ...]]\n");
+		exit(0);
 	}
 }
 
-static int	verif_flag_env(char **cmd, int x, t_flag_env *flag)
+static int	verif_flag_env(char **cmd, t_intflag *var, t_flag_env *flag,
+		char **envp)
 {
-	int		y;
-
-	y = 1;
-	if (cmd[x][0] == '-' && cmd[x][1] != '\0')
+	var->y = 1;
+	if (cmd[var->x][0] == '-' && cmd[var->x][1] != '\0')
 	{
-		while (cmd[x][y] != '\0')
+		while (cmd[var->x][var->y] != '\0')
 		{
-			if (cmd[x][y] == 'i')
+			if (cmd[var->x][var->y] == 'i')
 				flag->i_min = 1;
-			else if (cmd[x][y] == 'u')
-				return (verif_u_min(cmd, x, y, flag));
+			else if (cmd[var->x][var->y] == 'u')
+				return (verif_u_min(cmd, var, flag, envp));
 			else
-				return (ft_printf_erreur(cmd, x, y));
-			y++;
+				return (ft_printf_erreur(cmd, var->x, var->y));
+			var->y++;
 		}
 		return (1);
 	}
-	else if (cmd[x][0] == '-' && cmd[x][1] == '\0')
+	else if (cmd[var->x][0] == '-' && cmd[var->x][1] == '\0')
 		flag->i_min = 1;
 	else
 		return (0);
 	return (1);
 }
 
-int			check_flag_env(char **cmd, t_flag_env *flag)
+int			check_flag_env(char **cmd, t_flag_env *flag, char **envp)
 {
-	int			x;
 	int			ret;
+	t_intflag	var;
 
-	x = 1;
-	while (cmd[x] != NULL)
+	ft_memset(&var, '\0', sizeof(var));
+	var.x = 1;
+	while (cmd[var.x] != NULL)
 	{
-		if ((ret = verif_flag_env(cmd, x, flag)) == 0)
+		if ((ret = verif_flag_env(cmd, &var, flag, envp)) == 0)
 			break ;
 		if (ret == -1)
 			return (-1);
 		if (ret == 2)
-			x++;
-		x++;
+			var.x++;
+		var.x++;
 	}
-	return (x);
+	return (var.x);
 }

@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 11:34:53 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/10 17:21:48 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 10:45:40 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int			find_var(char **envp, char *tmp_data)
 	char	*tmp_envp;
 
 	x = 0;
+	if (envp == NULL || envp[0] == NULL)
+		return (0);
 	while (envp[x] != NULL)
 	{
 		tmp_envp = ft_strdup(envp[x]);
@@ -39,7 +41,7 @@ char		**envp_null(char *data)
 {
 	char	**new_envp;
 
-	if ((new_envp = ft_memalloc(sizeof(char *))) == NULL)
+	if ((new_envp = ft_memalloc(sizeof(char *) * 2)) == NULL)
 		return (NULL);
 	new_envp[0] = ft_strdup(data);
 	return (new_envp);
@@ -52,7 +54,8 @@ char		**envp_no_null(char **envp, char *data)
 	char	*tmp_data;
 
 	x = 0;
-	tmp_data = ft_strdup(data);
+	if ((tmp_data = ft_strdup(data)) == NULL)
+		return (envp);
 	p = ft_strchr(tmp_data, '=');
 	*p = '\0';
 	x = find_var(envp, tmp_data);

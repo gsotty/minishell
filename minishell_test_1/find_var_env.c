@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/07 14:10:43 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/09 15:37:25 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 15:56:14 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ char	*find_var_env(char **envp, char *name)
 		free(tmp);
 		x++;
 	}
+	if (envp[x] == NULL)
+		return (NULL);
 	return (p + 1);
 }

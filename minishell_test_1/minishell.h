@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/10 13:57:59 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 16:04:47 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 typedef struct		s_flag_env
 {
 	unsigned int	i_min : 1;
-	unsigned int	u_min : 1;
+	unsigned int	u_min;
 	char			*name;
 }					t_flag_env;
 
@@ -30,8 +30,14 @@ typedef struct		s_split
 	int				x;
 }					t_split;
 
+typedef struct		s_intflag
+{
+	int				x;
+	int				y;
+}					t_intflag;
+
 int					echo(char **argv);
-int					check_flag_env(char **cmd, t_flag_env *flag);
+int					check_flag_env(char **cmd, t_flag_env *flag, char **envp);
 char				**creat_envp(char **envp);
 char				**exe(char *buf, char **envp);
 char				**cd(char **argv, char **envp);
@@ -41,6 +47,7 @@ char				**ft_setenv(char **envp, char **cmd);
 char				**remove_env(char **envp, char *name);
 char				*find_var_env(char **env, char *name);
 char				**ft_unsetenv(char **envp, char **cmd);
+char				**exe_cmd_no_fork(char **argv, char **envp);
 char				**ft_strsplit_space(char const *s, char *c);
 char				**exe_cmd(int argc, char **argv, char **envp);
 char				**exe_fork(int argc, char **argv, char **envp);

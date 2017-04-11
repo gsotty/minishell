@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 10:40:26 by gsotty            #+#    #+#             */
-/*   Updated: 2017/03/06 14:49:58 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 12:10:14 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct		s_len
 }					t_len;
 
 int					ft_printf(const char *str, ...);
+int					ft_printf_e(const char *str, ...);
 int					ft_sprintf(char *buf, const char *str, ...);
 char				*write_buf(t_struc *struc, char *buf, t_len *len,
 		va_list ap);
@@ -101,6 +102,7 @@ void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				*ft_memalloc(size_t size);
 void				ft_putnbr(int nb);
 void				ft_putchar(char c);
+void				ft_putnstr_e(char *str, size_t n);
 char				*ft_flag_1(char *tmp, t_len *len, char *str,
 		size_t len_str);
 char				*ft_itoa_int_min(int n);

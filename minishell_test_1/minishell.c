@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 10:31:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/10 16:29:25 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/11 11:45:01 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*creat_buf(char *buf)
 	x = 0;
 	cont = 0;
 	ft_memset(buf, '\0', MAX_CANON);
-	while (((ret = read(0, &c, 1)) && c != '\n') && cont < MAX_CANON)
+	while (((ret = read(0, &c, 1)) && c != '\n') && cont < MAX_CANON - 1)
 	{
 		buf[cont] = c;
 		cont++;
