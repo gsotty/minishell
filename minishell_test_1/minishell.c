@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 10:31:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/11 11:45:01 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/12 20:10:42 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <limits.h>
 #include <stdio.h>
 
-static void	print_prompt(void)
+void		print_prompt(void)
 {
 	char	pwd[PATH_MAX];
 
@@ -52,15 +52,15 @@ static char	*creat_buf(char *buf)
 	return (buf);
 }
 
-static char	**while_minishell(char **envp)
+static char	**while_minishell(char **envp, int x)
 {
-	int		x;
 	char	buf[MAX_CANON];
 
-	x = 0;
 	print_prompt();
+	signal(SIGINT, traite_signal);
 	if (creat_buf(buf) != NULL)
 	{
+		signal(SIGINT, traite_signal_fork);
 		while ((buf[x] == ' ' || buf[x] == '\t') && buf[x] != '\0')
 			x++;
 		if (ft_strstr(buf, "exit") != NULL)
@@ -86,7 +86,7 @@ static int	minishell(char **envp_begin)
 
 	envp = creat_envp(envp_begin);
 	while (1)
-		envp = while_minishell(envp);
+		envp = while_minishell(envp, 0);
 	free_tab(envp);
 	return (0);
 }

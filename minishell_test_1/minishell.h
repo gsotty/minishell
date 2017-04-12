@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/11 16:04:47 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/12 19:43:30 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "./libft/libft.h"
 # include "./ft_printf/ft_printf.h"
 # include <unistd.h>
+# include <signal.h>
 
 typedef struct		s_flag_env
 {
@@ -52,6 +53,9 @@ char				**ft_strsplit_space(char const *s, char *c);
 char				**exe_cmd(int argc, char **argv, char **envp);
 char				**exe_fork(int argc, char **argv, char **envp);
 char				**remalloc_envp(char **envp, int after_size, int new_size);
+void				print_prompt(void);
 void				free_tab(char **tab);
+void				traite_signal(int s);
+void				traite_signal_fork(int s);
 
 #endif
