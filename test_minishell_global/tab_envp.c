@@ -6,13 +6,13 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/09 12:45:18 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/22 15:16:28 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 13:33:47 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**creat_envp(char **envp_begin)
+char	**creat_env(char **envp_begin)
 {
 	int		x;
 
@@ -21,43 +21,43 @@ char	**creat_envp(char **envp_begin)
 		return (NULL);
 	while (envp_begin[x] != NULL)
 		x++;
-	if ((envp = ft_memalloc(sizeof(char *) * (x + 1))) == NULL)
+	if ((g_envp = ft_memalloc(sizeof(char *) * (x + 1))) == NULL)
 		return (NULL);
 	x = 0;
 	while (envp_begin[x] != NULL)
 	{
-		envp[x] = ft_strdup(envp_begin[x]);
+		g_envp[x] = ft_strdup(envp_begin[x]);
 		x++;
 	}
-	return (envp);
+	return (g_envp);
 }
 
-void	remalloc_envp(int after_size, int new_size)
+void	remalloc_env(int after_size, int new_size)
 {
 	int		x;
-	char	**new_envp;
+	char	**new_env;
 
-	if ((new_envp = ft_memalloc(sizeof(char *) * (new_size + 1))) == NULL)
+	if ((new_env = ft_memalloc(sizeof(char *) * (new_size + 1))) == NULL)
 		return ;
 	x = 0;
 	while (x < after_size)
 	{
-		new_envp[x] = ft_strdup(envp[x]);
-		free(envp[x]);
-		envp[x] = NULL;
+		new_env[x] = ft_strdup(g_envp[x]);
+		free(g_envp[x]);
+		g_envp[x] = NULL;
 		x++;
 	}
-	free(envp);
-	if ((envp = ft_memalloc(sizeof(char *) * (new_size + 1))) == NULL)
+	free(g_envp);
+	if ((g_envp = ft_memalloc(sizeof(char *) * (new_size + 1))) == NULL)
 		return ;
 	x = 0;
 	while (x < after_size)
 	{
-		envp[x] = ft_strdup(new_envp[x]);
-		free(new_envp[x]);
-		new_envp[x] = NULL;
+		g_envp[x] = ft_strdup(new_env[x]);
+		free(new_env[x]);
+		new_env[x] = NULL;
 		x++;
 	}
-	free(new_envp);
+	free(new_env);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 15:37:23 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/22 15:38:36 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 13:34:11 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_printf_erreur(char **cmd, int x, int y)
 {
-	ft_printf_e("envp: illegal option -- %c\nusage: envp [-i] ",
+	ft_printf_e("env: illegal option -- %c\nusage: env [-i] ",
 			cmd[x][y]);
 	ft_printf_e("[-u name] [name=value ...]\n\t   [utility [argume");
 	ft_printf_e("nt ...]]\n");
@@ -27,13 +27,13 @@ static int	verif_u_min(char **cmd, t_intflag *var, t_flag_env *flag)
 	if (cmd[var->x][var->y + 1] != '\0')
 	{
 		flag->name = ft_strdup(cmd[var->x] + var->y + 1);
-		remove_envp(cmd[var->x] + var->y + 1);
+		remove_env(cmd[var->x] + var->y + 1);
 		return (1);
 	}
 	else if (cmd[var->x][var->y + 1] == '\0' && cmd[var->x + 1] != NULL)
 	{
 		flag->name = ft_strdup(cmd[var->x + 1]);
-		remove_envp(cmd[var->x + 1]);
+		remove_env(cmd[var->x + 1]);
 		return (2);
 	}
 	else

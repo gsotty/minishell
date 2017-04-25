@@ -28,7 +28,7 @@ static int		ft_while_exe_path(char **argv, char **path, int x)
 	{
 		free(argv[0]);
 		argv[0] = ft_strdup(tmp_join);
-		execve(tmp_join, argv, envp);
+		execve(tmp_join, argv, g_envp);
 		free(tmp_join);
 		return (1);
 	}
@@ -57,7 +57,7 @@ void			no_exe_cmd_2(char **argv, int x)
 	char	*tmp;
 	char	**path;
 
-	if (envp[x] == NULL)
+	if (g_envp[x] == NULL)
 	{
 		ft_printf_e("\033[31mminishell: command not found:\033[0m %s\n",
 				argv[0]);
@@ -65,7 +65,7 @@ void			no_exe_cmd_2(char **argv, int x)
 	}
 	else
 	{
-		tmp = ft_strdup(envp[x]);
+		tmp = ft_strdup(g_envp[x]);
 		p = ft_strchr(tmp, '=');
 		*p = '\0';
 		path = ft_strsplit_space(p + 1, ":");
@@ -82,12 +82,12 @@ void			no_exe_cmd(char **argv)
 	char	*tmp;
 
 	x = 0;
-	if (envp == NULL || envp[x] == NULL)
+	if (g_envp == NULL || g_envp[x] == NULL)
 		ft_printf_e("\033[31mminishell: command not found:\033[0m %s\n",
 				argv[0]);
-	while (envp[x] != NULL)
+	while (g_envp[x] != NULL)
 	{
-		tmp = ft_strdup(envp[x]);
+		tmp = ft_strdup(g_envp[x]);
 		p = ft_strchr(tmp, '=');
 		*p = '\0';
 		if (ft_strcmp(tmp, "PATH") == 0)
@@ -120,7 +120,7 @@ void			exe_fork(int argc, char **argv)
 	if (father == 0)
 	{
 		if (access(argv[0], F_OK | X_OK) == 0)
-			execve(argv[0], argv, envp);
+			execve(argv[0], argv, g_envp);
 		else
 			no_exe_cmd(argv);
 		exit(0);

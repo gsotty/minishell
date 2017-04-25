@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 15:28:33 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/22 15:31:06 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 13:06:03 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	env_argv(char **cmd, int ret)
 	while (cmd[ret + y] != NULL)
 	{
 		if (ft_strchr(cmd[ret + y], '=') != NULL)
-			add_envp(cmd[ret + y]);
+			add_env(cmd[ret + y]);
 		else
 			break ;
 		y++;
@@ -44,11 +44,11 @@ void	env_no_argv(void)
 	int		x;
 
 	x = 0;
-	if (envp == NULL || envp[0] == NULL)
+	if (g_envp == NULL || g_envp[0] == NULL)
 		return ;
-	while (envp[x] != NULL)
+	while (g_envp[x] != NULL)
 	{
-		ft_printf("%s\n", envp[x]);
+		ft_printf("%s\n", g_envp[x]);
 		x++;
 	}
 	return ;
@@ -64,15 +64,15 @@ void	ft_env(char **cmd)
 		return ;
 	if (flag.i_min == 1)
 	{
-		free_tab(envp);
-		envp = NULL;
+		free_tab(g_envp);
+		g_envp = NULL;
 	}
 	if (cmd[ret] == NULL && flag.u_min == 0)
 		env_no_argv();
 	else
 	{
 		if (flag.u_min >= 1)
-			remove_envp(flag.name);
+			remove_env(flag.name);
 		env_argv(cmd, ret);
 	}
 	if (flag.u_min == 1)

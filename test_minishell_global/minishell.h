@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 11:19:04 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/22 15:38:12 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 15:36:57 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 
-char	**envp;
+char				**g_envp;
 
 typedef struct		s_flag_cd
 {
 	unsigned int	p_maj : 1;
 	unsigned int	l_maj : 1;
-	unsigned int	rien : 1;
+	unsigned int	no_ag : 1;
 	unsigned int	neg : 1;
 }					t_flag_cd;
 
@@ -55,21 +55,23 @@ int					echo(char **argv);
 int					check_flag_env(char **cmd, t_flag_env *flag);
 char				*find_var_env(char *name);
 char				**ft_strsplit_space(char const *s, char *c);
-char				**creat_envp(char **envp_begin);
+char				**creat_env(char **envp_begin);
 void				exe(char *buf);
 void				cd(char **argv);
-void				ft_env(char **cmd);
-void				add_envp(char *data);
-void				ft_setenv(char **cmd);
-void				remove_envp(char *name);
-void				ft_unsetenv(char **cmd);
-void				exe_cmd_no_fork(void);
-void				exe_cmd(int argc, char **argv);
-void				exe_fork(int argc, char **argv);
-void				remalloc_envp(int after_size, int new_size);
 void				print_prompt(void);
+void				ft_env(char **cmd);
+void				add_env(char *data);
 void				free_tab(char **tab);
 void				traite_signal(int s);
+void				exe_cmd_no_fork(void);
+void				ft_setenv(char **cmd);
+void				remove_env(char *name);
+void				ft_unsetenv(char **cmd);
 void				traite_signal_fork(int s);
+void				exe_cmd(int argc, char **argv);
+void				exe_fork(int argc, char **argv);
+void				add_pwd(t_flag_cd *flag_cd, char *path);
+void				add_oldpwd(t_flag_cd *flag_cd, char *path);
+void				remalloc_env(int after_size, int new_size);
 
 #endif

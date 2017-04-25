@@ -6,7 +6,7 @@
 #    By: gsotty <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 15:44:40 by gsotty            #+#    #+#              #
-#    Updated: 2017/04/22 14:53:19 by gsotty           ###   ########.fr        #
+#    Updated: 2017/04/25 14:54:49 by gsotty           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,9 @@ SRC = minishell.c \
 	  verif_flag_env.c \
 	  exe_fork.c \
 	  traite_signal_fork.c \
-	  main.c
+	  main.c \
+	  add_pwd.c \
+	  add_oldpwd.c
 
 OBJ = $(SRC:.c=.o)
 

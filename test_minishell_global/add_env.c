@@ -6,44 +6,47 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/22 15:34:40 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/22 15:34:42 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 15:48:34 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			find_var(char *tmp_data)
+static int	find_var(char *tmp_data)
 {
 	int		x;
 	char	*p;
-	char	*tmp_envp;
+	char	*tmp_env;
 
 	x = 0;
-	if (envp == NULL || envp[0] == NULL)
+	if (g_envp == NULL || g_envp[0] == NULL)
 		return (0);
-	while (envp[x] != NULL)
+	while (g_envp[x] != NULL)
 	{
-		tmp_envp = ft_strdup(envp[x]);
-		p = ft_strchr(tmp_envp, '=');
+		tmp_env = ft_strdup(g_envp[x]);
+		p = ft_strchr(tmp_env, '=');
 		*p = 0;
-		if (ft_strcmp(tmp_envp, tmp_data) == 0)
+		if (ft_strcmp(tmp_env, tmp_data) == 0)
 		{
-			free(tmp_envp);
+			free(tmp_env);
 			break ;
 		}
-		free(tmp_envp);
+		free(tmp_env);
 		x++;
 	}
 	return (x);
 }
 
-void		envp_null(char *data)
+static void	envp_null(char *data)
 {
-	char	**new_envp;
-
-	if ((new_envp = ft_memalloc(sizeof(char *) * 2)) == NULL)
-		return ;
-	new_envp[0] = ft_strdup(data);
+	if (g_envp == NULL)
+	{
+		if ((g_envp = ft_memalloc(sizeof(char *) * 2)) == NULL)
+			return ;
+		g_envp[0] = ft_strdup(data);
+	}
+	else
+		g_envp[0] = ft_strdup(data);
 	return ;
 }
 
@@ -58,23 +61,23 @@ void		envp_no_null(char *data)
 	p = ft_strchr(tmp_data, '=');
 	*p = '\0';
 	x = find_var(tmp_data);
-	if (envp[x] == NULL)
+	if (g_envp[x] == NULL)
 	{
-		remalloc_envp(x, x + 1);
-		envp[x] = ft_strdup(data);
+		remalloc_env(x, x + 1);
+		g_envp[x] = ft_strdup(data);
 	}
 	else
 	{
-		free(envp[x]);
-		envp[x] = ft_strdup(data);
+		free(g_envp[x]);
+		g_envp[x] = ft_strdup(data);
 	}
 	free(tmp_data);
 	return ;
 }
 
-void		add_envp(char *data)
+void		add_env(char *data)
 {
-	if (envp == NULL || envp[0] == NULL)
+	if (g_envp == NULL || g_envp[0] == NULL)
 	{
 		envp_null(data);
 		return ;

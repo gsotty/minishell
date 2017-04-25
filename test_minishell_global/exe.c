@@ -6,13 +6,13 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 11:34:50 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/22 15:36:17 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 13:10:37 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	envp_fork(char **argv)
+static void	env_fork(char **argv)
 {
 	pid_t	father;
 
@@ -25,7 +25,7 @@ static void	envp_fork(char **argv)
 	if (father == 0)
 	{
 		ft_env(argv);
-		free_tab(envp);
+		free_tab(g_envp);
 		exit(0);
 	}
 	return ;
@@ -34,7 +34,7 @@ static void	envp_fork(char **argv)
 void		exe_cmd(int argc, char **argv)
 {
 	if (ft_strcmp(argv[0], "env") == 0)
-		envp_fork(argv);
+		env_fork(argv);
 	else if (ft_strcmp(argv[0], "echo") == 0)
 		echo(argv);
 	else if (ft_strcmp(argv[0], "setenv") == 0)
