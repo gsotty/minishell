@@ -6,54 +6,13 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 10:31:31 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/25 15:20:58 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 17:09:29 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <limits.h>
 #include <stdio.h>
-
-void		print_prompt(void)
-{
-	char			*tmp;
-	char			pwd[PATH_MAX];
-	struct stat		lg;
-	struct stat		phy;
-
-	if ((tmp = find_var_env("PWD")) != NULL && *tmp == '/')
-	{
-		if (stat(tmp, &lg) == -1 || stat(".", &phy) == -1)
-		{
-			getcwd(pwd, PATH_MAX);
-			if (ft_strchr(pwd, '/') == ft_strrchr(pwd, '/'))
-				ft_printf("\033[32m%s\033[0m \033[36m$>\033[0m ",
-						ft_strrchr(pwd, '/'));
-			else
-				ft_printf("\033[32m%s\033[0m \033[36m$>\033[0m ",
-						ft_strrchr(pwd, '/') + 1);
-		}
-		if (lg.st_dev == phy.st_dev && lg.st_ino == phy.st_ino)
-		{
-			if (ft_strchr(tmp, '/') == ft_strrchr(tmp, '/'))
-				ft_printf("\033[32m%s\033[0m \033[36m$>\033[0m ",
-						ft_strrchr(tmp, '/'));
-			else
-				ft_printf("\033[32m%s\033[0m \033[36m$>\033[0m ",
-						ft_strrchr(tmp, '/') + 1);
-		}
-	}
-	else
-	{
-		getcwd(pwd, PATH_MAX);
-		if (ft_strchr(pwd, '/') == ft_strrchr(pwd, '/'))
-			ft_printf("\033[32m%s\033[0m \033[36m$>\033[0m ",
-					ft_strrchr(pwd, '/'));
-		else
-			ft_printf("\033[32m%s\033[0m \033[36m$>\033[0m ",
-					ft_strrchr(pwd, '/') + 1);
-	}
-}
 
 static char	*creat_buf(char *buf)
 {

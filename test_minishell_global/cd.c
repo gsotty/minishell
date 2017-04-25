@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 14:35:53 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/25 15:11:13 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/25 16:48:38 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,7 @@ int		check_flag_cd(t_flag_cd *flag_cd, char **argv)
 		x++;
 	}
 	if (argv[x] == NULL)
-	{
 		flag_cd->no_ag = 1;
-		return (x);
-	}
 	else if (ft_strcmp(argv[1], "-") == 0)
 		flag_cd->neg = 1;
 	else if (!(argv[x] != '\0' || argv[x] == '\0'))
