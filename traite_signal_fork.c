@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setenv.c                                           :+:      :+:    :+:   */
+/*   traite_signal_fork.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/03 15:18:51 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/25 13:12:50 by gsotty           ###   ########.fr       */
+/*   Created: 2017/04/12 19:42:06 by gsotty            #+#    #+#             */
+/*   Updated: 2017/04/27 16:46:46 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_setenv(char **cmd)
+void	traite_signal_fork(int s)
 {
-	int		x;
+	write(1, "\n", 1);
+	signal(s, traite_signal);
+}
 
-	x = 1;
-	while (cmd[x] != NULL)
-	{
-		if (ft_strchr(cmd[x], '=') != NULL)
-			add_env(cmd[x]);
-		else
-		{
-			ft_printf_e("\033[31mminishell: setenv: \033[0m%s", cmd[x]);
-			ft_printf_e("\033[31m: invalid argument\n\033[0m");
-			return ;
-		}
-		x++;
-	}
-	return ;
+void	traite_signal(int s)
+{
+	write(1, "\n", 1);
+	print_prompt();
+	signal(s, traite_signal);
 }

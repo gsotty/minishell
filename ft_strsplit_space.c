@@ -5,87 +5,64 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/31 10:44:03 by gsotty            #+#    #+#             */
-/*   Updated: 2017/04/05 13:39:15 by gsotty           ###   ########.fr       */
+/*   Created: 2017/04/06 15:59:07 by gsotty            #+#    #+#             */
+/*   Updated: 2017/04/10 17:52:45 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 
-static int	ft_mot(const char *s)
+int		is_char(char str, char *c)
 {
-	int		x;
-	int		y;
-	char	*str;
-
-	x = 0;
-	y = 0;
-	str = (char *)s;
-	while (*str != '\0')
-	{
-		if (y == 1 && (*str == ' ' || *str == '\t'))
-			y = 0;
-		if (y == 0 && (*str != ' ' && *str != '\t'))
-		{
-			y = 1;
-			x++;
-		}
-		str++;
-	}
-	return (x);
-}
-
-static int	ft_len_mot(const char *s)
-{
-	int		len;
-	char	*str;
-
-	len = 0;
-	str = (char *)s;
-	while ((*str != ' ' && *str != '\t') && *str != '\0')
-	{
-		len++;
-		str++;
-	}
-	return (len);
-}
-
-static int	ft_while(char const *s, char **tab, int x, int y)
-{
-	int		len_mot;
-
-	while ((s[y] == ' ' || s[y] == '\t') && s[y] != '\0')
-		y++;
-	len_mot = ft_len_mot(s + y);
-	if ((tab[x] = ft_memalloc(sizeof(char) * len_mot)) == NULL)
-		return (-1);
-	tab[x] = ft_memcpy(tab[x], (const char *)s + y, len_mot);
-	tab[x][len_mot] = '\0';
-	y += len_mot;
-	return (y);
-}
-
-char		**ft_strsplit_space(char const *s)
-{
-	char	**tab;
-	int		nbr_mot;
-	int		y;
 	int		x;
 
 	x = 0;
-	y = 0;
-	if (s == NULL)
-		return (NULL);
-	nbr_mot = ft_mot(s);
-	if ((tab = ft_memalloc(sizeof(char *) * nbr_mot + 1)) == NULL)
-		return (NULL);
-	tab[nbr_mot] = NULL;
-	while (nbr_mot > x)
+	while (c[x] != '\0')
 	{
-		if ((y = ft_while(s, tab, x, y)) == -1)
-			return (NULL);
+		if (c[x] == str)
+			return (1);
 		x++;
+	}
+	return (0);
+}
+
+void	ft_while(char **tab, char const *buf, char *c, t_split *len)
+{
+	int		y;
+	int		fin;
+	int		debut;
+
+	y = 0;
+	fin = 0;
+	debut = 0;
+	while (is_char(buf[y + len->j], c) == 1 && buf[y + len->j] != '\0')
+		y++;
+	debut = y;
+	while (is_char(buf[y + len->j], c) == 0 && buf[y + len->j] != '\0')
+		y++;
+	fin = y;
+	if (!(tab[len->x] = ft_memalloc(sizeof(**tab) * ((fin - debut) + 1))))
+		return ;
+	ft_memcpy(tab[len->x], buf + len->j + debut, fin - debut);
+	tab[len->x][fin - debut] = '\0';
+	len->j += fin;
+}
+
+char	**ft_strsplit_space(char const *buf, char *c)
+{
+	t_split		len;
+	char		**tab;
+
+	tab = NULL;
+	ft_memset(&len, 0, sizeof(t_split));
+	if ((tab = ft_memalloc(sizeof(*tab) * (MAX_CANON))) == NULL)
+		return (NULL);
+	while (buf[len.j] != '\0' && len.x < MAX_CANON)
+	{
+		ft_while(tab, buf, c, &len);
+		while (is_char(buf[len.j], c) == 1 && buf[len.j] != '\0')
+			len.j++;
+		len.x++;
 	}
 	return (tab);
 }

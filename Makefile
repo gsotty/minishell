@@ -6,7 +6,7 @@
 #    By: gsotty <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 15:44:40 by gsotty            #+#    #+#              #
-#    Updated: 2017/04/04 15:40:14 by gsotty           ###   ########.fr        #
+#    Updated: 2017/04/26 13:02:17 by gsotty           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,17 +22,26 @@ FT_PRINTF = ./ft_printf
 
 INCLUDE = ./minishell.h
 
-SRC = add_env.c \
-	  cd.c \
-	  creat_env.c \
-	  echo.c \
-	  env.c \
-	  exe_cmd.c \
+SRC = minishell.c \
 	  ft_strsplit_space.c \
+	  exe.c \
+	  echo.c \
+	  free_tab.c \
+	  cd.c \
+	  add_env.c \
+	  find_var_env.c \
+	  env.c \
 	  remove_env.c \
 	  setenv.c \
-	  test.c \
-	  unsetenv.c
+	  unsetenv.c \
+	  tab_envp.c \
+	  verif_flag_env.c \
+	  exe_fork.c \
+	  traite_signal_fork.c \
+	  main.c \
+	  add_pwd.c \
+	  add_oldpwd.c \
+	  print_prompt.c
 
 OBJ = $(SRC:.c=.o)
 

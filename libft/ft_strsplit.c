@@ -6,7 +6,7 @@
 /*   By: gsotty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/10 16:01:14 by gsotty            #+#    #+#             */
-/*   Updated: 2016/11/12 17:13:18 by gsotty           ###   ########.fr       */
+/*   Updated: 2017/04/06 15:02:56 by gsotty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char		**ft_strsplit(char const *s, char c)
 	if (s == NULL)
 		return (NULL);
 	nbr_mot = ft_mot((const char *)s, c);
-	if ((tab = (char **)malloc(sizeof(*tab) * ft_mot((const char *)s, c) + 1))
+	if ((tab = ft_memalloc(sizeof(*tab) * (ft_mot((const char *)s, c) + 1)))
 			== NULL)
 		return (NULL);
 	while (nbr_mot--)
@@ -70,6 +70,5 @@ char		**ft_strsplit(char const *s, char c)
 		s = s + ft_len_mot(s, c);
 		x++;
 	}
-	tab[x] = NULL;
 	return (tab);
 }
